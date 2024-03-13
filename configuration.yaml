@@ -1,0 +1,63 @@
+esphome:
+  name: energy-meter
+  friendly_name: Energy Meter
+
+esp8266:
+  board: esp01_1m
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "Dg6gIEBN263oFKlvwsDBeX6IxqVoBWEhL9VWHXhcMCM="
+
+ota:
+  password: "0a658b079007ee3b6868cec5c1733bd9"
+
+wifi:
+  ssid: Your wifi SSID
+  password: Your wifi PASSWORD
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Energy-Meter Fallback Hotspot"
+    password: "SdC4q4LyOo77"
+
+captive_portal:
+
+uart:
+  rx_pin: GPIO5
+  tx_pin: GPIO4
+  baud_rate : 9600
+
+modbus:
+  
+sensor:
+  - platform: pzemac
+    id: pzemac_1
+    address: 1  # specify the Modbus custom address when there are multiple PZEM connected
+    current:
+      name: 'Current'
+      accuracy_decimals: 3
+    voltage:
+      name: 'Voltage'
+      accuracy_decimals: 1
+    power:
+      name: 'Power'
+      accuracy_decimals: 1
+    energy:
+      name: 'Energy'
+      # convert to kWh
+      filters:
+        - multiply: 0.001
+      unit_of_measurement: 'kWh'
+      accuracy_decimals: 3
+    frequency:
+      name: 'Frequency'
+      accuracy_decimals: 1
+    power_factor:
+      name: 'Power Factor'
+      accuracy_decimals: 2
+    update_interval: 30s
